@@ -26,13 +26,15 @@ new Vue({
   computed: {
     filteredLessons() {
       return this.lessons
-        .filter(lesson => lesson.subject.toLowerCase().includes(this.searchQuery.toLowerCase()))
         .sort((a,b)=>{
           let modifier = this.sortOrder === "asc" ? 1 : -1;
-          if (typeof a[this.sortBy] === "string") return a[this.sortBy].localeCompare(b[this.sortBy]) * modifier;
+          if (typeof a[this.sortBy] === "string") {
+            return a[this.sortBy].localeCompare(b[this.sortBy]) * modifier;
+          }
           return (a[this.sortBy] - b[this.sortBy]) * modifier;
         });
     },
+    
     cartTotal() {
       return this.cart.reduce((sum,item)=>sum + item.book.price * item.qty,0);
     },
