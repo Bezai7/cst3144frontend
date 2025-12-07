@@ -1,26 +1,27 @@
+var apiUrl = "http://localhost:3000";
+
 new Vue({
   el: '#app',
   data: {
-     lessons: [
-      { id: 1, subject: "UX Design", location: "Hendon", price: 120, spaces: 5 },
-      { id: 2, subject: "Data Analysis", location: "Colindale", price: 150, spaces: 5 },
-      { id: 3, subject: "Creative Writing", location: "Brent Cross", price: 90, spaces: 5 },
-      { id: 4, subject: "Art & Craft", location: "Golders Green", price: 100, spaces: 5 },
-      { id: 5, subject: "Music Theory", location: "Finchley", price: 95, spaces: 5 },
-      { id: 6, subject: "Photography Basics", location: "Camden", price: 110, spaces: 5 },
-      { id: 7, subject: "Web Development", location: "Hackney", price: 200, spaces: 5 },
-      { id: 8, subject: "Robotics Intro", location: "Islington", price: 180, spaces: 5 },
-      { id: 9, subject: "Film Making", location: "Soho", price: 160, spaces: 5 },
-      { id: 10, subject: "Graphic Design", location: "Shoreditch", price: 130, spaces: 5 },
-      { id: 11, subject: "Mindfulness & Yoga", location: "Clapham", price: 100, spaces: 5 },
-      { id: 12, subject: "Entrepreneurship", location: "Hackney", price: 250, spaces: 5 }
-    ],
+    lessons: [],
     sortBy: "subject",
     sortOrder: "asc",
     cart: [],
     showCart: false,
     customer: { name: '', phone: '' },
-    searchQuery: ''
+    searchQuery: '',
+    canCheckout: false
+  },
+  created() {
+    this.loadLessons();
+  },
+  watch: {
+    'customer.name': function() {
+      this.validateCheckout();
+    },
+    'customer.phone': function() {
+      this.validateCheckout();
+    }
   },
   computed: {
     filteredLessons() {
