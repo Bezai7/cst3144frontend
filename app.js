@@ -34,8 +34,7 @@ new Vue({
           return (a[this.sortBy] - b[this.sortBy]) * modifier;
         });
     },
-
-cartTotal() {
+    cartTotal() {
       return this.cart.reduce((sum,item)=>sum + item.book.price * item.qty,0);
     },
     cartTotalQty() {
@@ -43,7 +42,7 @@ cartTotal() {
     }
   },
   methods: {
-   
+    // Fetch all lessons from backend
     loadLessons() {
       fetch(apiUrl + "/lessons")
         .then(response => response.json())
@@ -58,7 +57,7 @@ cartTotal() {
           console.log('Error loading lessons:', error);
         });
     },
-   
+    // Search functionality - backend search as you type
     doSearch() {
       var query = this.searchQuery.trim();
       if (query.length >= 1) {
@@ -114,30 +113,44 @@ cartTotal() {
         this.cart.splice(index,1);
       }
     },
-    
+    // Validate name (letters only) and phone (numbers only) using regex
     validateCheckout() {
       var nameRegex = /^[A-Za-z\s]+$/;
       var phoneRegex = /^[0-9]+$/;
       
+      // Check if fields are empty
       if (this.customer.name.trim() === '' || this.customer.phone.trim() === '') {
         this.canCheckout = false;
         return false;
       }
       
-      if (!nameRegex.test(this.customer.name)) {
+      // Validate name (letters and spaces only)
+      if (!nameRegex.test(this.customer.name.trim())) {
         this.canCheckout = false;
         return false;
       }
       
-      if (!phoneRegex.test(this.customer.phone)) {
+      // Validate phone (numbers only)
+      if (!phoneRegex.test(this.customer.phone.trim())) {
         this.canCheckout = false;
         return false;
       }
       
+      // Both validations passed
       this.canCheckout = true;
       return true;
     },
-   
+    // Get icon from database, fallback to default if not available
+    getIconClass(lesson) {
+      // Use icon from database if available, otherwise use default
+      if (lesson.icon) {
+        return lesson.icon;
+      }
+      
+      // Fallback to default icon if not stored in database
+      return 'fa-solid fa-graduation-cap';
+    },
+    // Checkout form - POST order and PUT lessons
     checkoutForm(){
       if (!this.validateCheckout()) {
         alert("Please enter valid name (letters only) and phone (numbers only)");
@@ -149,7 +162,7 @@ cartTotal() {
         return;
       }
       
-     
+      // Prepare order data
       var orderData = {
         name: this.customer.name,
         phone: this.customer.phone,
@@ -159,7 +172,7 @@ cartTotal() {
         }))
       };
       
-     
+      // POST order to backend
       fetch(apiUrl + "/order", {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -169,13 +182,13 @@ cartTotal() {
       .then(res => {
         console.log('Order created:', res);
         
-     
+        // Prepare lesson updates
         var updates = this.lessons.map(lesson => ({
           id: lesson.id || lesson._id,
           update: { spaces: lesson.spaces }
         }));
         
-      
+        // PUT lessons to update spaces
         return fetch(apiUrl + "/lessons", {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
@@ -186,16 +199,16 @@ cartTotal() {
       .then(res => {
         console.log('Lessons updated:', res);
         
-       
+        // Display confirmation message
         alert(`Thanks ${this.customer.name}, your order has been submitted successfully! Total: $${this.cartTotal.toFixed(2)}`);
         
-       
+        // Reset cart and form
         this.cart = [];
         this.customer = {name:'', phone:''};
         this.canCheckout = false;
         this.showCart = false;
         
-      
+        // Reload lessons from server
         this.loadLessons();
       })
       .catch(error => {
