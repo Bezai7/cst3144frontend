@@ -16,7 +16,7 @@
         <span class="site-name">Lavender Academy</span>
       </div>
       <div class="header-controls">
-        <input type="text" v-model="searchQuery" placeholder="Search courses..." />
+        <input type="text" v-model="searchQuery" @input="doSearch" placeholder="Search courses..." />
         <button v-if="cart.length" class="cart-toggle" @click="showCart = true">Cart ({{ cartTotalQty }})</button>
       </div>
     </header>
@@ -74,10 +74,10 @@
         <div v-if="cart.length" class="checkout-form">
           <h3>Checkout</h3>
           <form @submit.prevent="checkoutForm">
-            <input type="text" v-model="customer.name" placeholder="Full Name" required />
-            <input type="tel" v-model="customer.phone" placeholder="Phone Number" required />
+            <input type="text" v-model="customer.name" placeholder="Full Name (letters only)" required />
+            <input type="tel" v-model="customer.phone" placeholder="Phone Number (numbers only)" required />
             <input type="text" :value="'$' + cartTotal.toFixed(2)" readonly />
-            <button type="submit" class="checkout-btn">Submit & Checkout</button>
+            <button type="submit" :disabled="!canCheckout" class="checkout-btn">Submit & Checkout</button>
           </form>
         </div>
       </div>
