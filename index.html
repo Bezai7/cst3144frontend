@@ -9,7 +9,7 @@
 </head>
 <body>
   <div id="app">
-    <!-- Header -->
+   
     <header>
       <div class="logo">
         <img src="logo.jpg" alt="Logo" />
@@ -21,7 +21,7 @@
       </div>
     </header>
 
-     <!-- Sort Section -->
+   
     <div class="sort-section">
       <label for="sortBy">Sort by:</label>
       <select v-model="sortBy" id="sortBy">
@@ -38,7 +38,7 @@
       </select>
     </div>
 
-    <!-- Courses -->
+   
     <div class="lessons">
       <div class="lesson-card" v-for="lesson in filteredLessons" :key="lesson.id">
         <h2>{{ lesson.subject }}</h2>
@@ -49,7 +49,7 @@
       </div>
     </div>
 
-    <!-- Cart Modal -->
+  
     <div class="cart-modal" :class="{ open: showCart }">
       <div class="cart-header">
         <h2>Your Cart</h2>
@@ -70,7 +70,7 @@
           <button class="remove-btn" @click="removeFromCart(item.book.id)">Remove</button>
         </div>
 
-        <!-- Checkout Form (fixed at bottom) -->
+        
         <div v-if="cart.length" class="checkout-form">
           <h3>Checkout</h3>
           <form @submit.prevent="checkoutForm">
@@ -83,10 +83,9 @@
       </div>
     </div>
 
-    <!-- Overlay -->
     <div class="overlay" v-if="showCart" @click="showCart = false"></div>
 
-    <!-- Footer -->
+    
     <footer>
       &copy; 2025 Lavender Academy | Elegant after school courses
     </footer>

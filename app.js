@@ -43,7 +43,7 @@ cartTotal() {
     }
   },
   methods: {
-    // Fetch all lessons from backend
+   
     loadLessons() {
       fetch(apiUrl + "/lessons")
         .then(response => response.json())
@@ -58,7 +58,7 @@ cartTotal() {
           console.log('Error loading lessons:', error);
         });
     },
-    // Search functionality - backend search as you type
+   
     doSearch() {
       var query = this.searchQuery.trim();
       if (query.length >= 1) {
@@ -114,7 +114,7 @@ cartTotal() {
         this.cart.splice(index,1);
       }
     },
-    // Validate name (letters only) and phone (numbers only) using regex
+    
     validateCheckout() {
       var nameRegex = /^[A-Za-z\s]+$/;
       var phoneRegex = /^[0-9]+$/;
@@ -137,7 +137,7 @@ cartTotal() {
       this.canCheckout = true;
       return true;
     },
-    // Checkout form - POST order and PUT lessons
+   
     checkoutForm(){
       if (!this.validateCheckout()) {
         alert("Please enter valid name (letters only) and phone (numbers only)");
@@ -149,7 +149,7 @@ cartTotal() {
         return;
       }
       
-      // Prepare order data
+     
       var orderData = {
         name: this.customer.name,
         phone: this.customer.phone,
@@ -159,7 +159,7 @@ cartTotal() {
         }))
       };
       
-      // POST order to backend
+     
       fetch(apiUrl + "/order", {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -169,13 +169,13 @@ cartTotal() {
       .then(res => {
         console.log('Order created:', res);
         
-        // Prepare lesson updates
+     
         var updates = this.lessons.map(lesson => ({
           id: lesson.id || lesson._id,
           update: { spaces: lesson.spaces }
         }));
         
-        // PUT lessons to update spaces
+      
         return fetch(apiUrl + "/lessons", {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
@@ -186,16 +186,16 @@ cartTotal() {
       .then(res => {
         console.log('Lessons updated:', res);
         
-        // Display confirmation message
+       
         alert(`Thanks ${this.customer.name}, your order has been submitted successfully! Total: $${this.cartTotal.toFixed(2)}`);
         
-        // Reset cart and form
+       
         this.cart = [];
         this.customer = {name:'', phone:''};
         this.canCheckout = false;
         this.showCart = false;
         
-        // Reload lessons from server
+      
         this.loadLessons();
       })
       .catch(error => {
