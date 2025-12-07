@@ -48,3 +48,50 @@
         <button :disabled="lesson.spaces === 0" @click="addToCart(lesson)">Add to Cart</button>
       </div>
     </div>
+
+    <!-- Cart Modal -->
+    <div class="cart-modal" :class="{ open: showCart }">
+      <div class="cart-header">
+        <h2>Your Cart</h2>
+        <button class="close-cart" @click="showCart = false">×</button>
+      </div>
+
+      <div class="cart-content">
+        <div v-if="cart.length === 0" class="empty-cart">Your cart is empty</div>
+
+        <div v-for="item in cart" :key="item.book.id" class="cart-item">
+          <div>{{ item.book.subject }}</div>
+          <div class="qty-controls">
+            <button @click="decreaseQty(item.book.id)">−</button>
+            {{ item.qty }}
+            <button @click="increaseQty(item.book.id)">+</button>
+          </div>
+          <div class="item-total">Total: ${{ (item.book.price * item.qty).toFixed(2) }}</div>
+          <button class="remove-btn" @click="removeFromCart(item.book.id)">Remove</button>
+        </div>
+
+        <!-- Checkout Form (fixed at bottom) -->
+        <div v-if="cart.length" class="checkout-form">
+          <h3>Checkout</h3>
+          <form @submit.prevent="checkoutForm">
+            <input type="text" v-model="customer.name" placeholder="Full Name" required />
+            <input type="tel" v-model="customer.phone" placeholder="Phone Number" required />
+            <input type="text" :value="'$' + cartTotal.toFixed(2)" readonly />
+            <button type="submit" class="checkout-btn">Submit & Checkout</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Overlay -->
+    <div class="overlay" v-if="showCart" @click="showCart = false"></div>
+
+    <!-- Footer -->
+    <footer>
+      &copy; 2025 Lavender Academy | Elegant after school courses
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
