@@ -20,3 +20,31 @@
         <button v-if="cart.length" class="cart-toggle" @click="showCart = true">Cart ({{ cartTotalQty }})</button>
       </div>
     </header>
+
+     <!-- Sort Section -->
+    <div class="sort-section">
+      <label for="sortBy">Sort by:</label>
+      <select v-model="sortBy" id="sortBy">
+        <option value="subject">Subject</option>
+        <option value="location">Location</option>
+        <option value="price">Price</option>
+        <option value="spaces">Spaces</option>
+      </select>
+
+      <label for="sortOrder">Order:</label>
+      <select v-model="sortOrder" id="sortOrder">
+        <option value="asc">Ascending</option>
+        <option value="desc">Descending</option>
+      </select>
+    </div>
+
+    <!-- Courses -->
+    <div class="lessons">
+      <div class="lesson-card" v-for="lesson in filteredLessons" :key="lesson.id">
+        <h2>{{ lesson.subject }}</h2>
+        <p><strong>Location:</strong> {{ lesson.location }}</p>
+        <p><strong>Price:</strong> ${{ lesson.price }}</p>
+        <p><strong>Spaces:</strong> {{ lesson.spaces }}</p>
+        <button :disabled="lesson.spaces === 0" @click="addToCart(lesson)">Add to Cart</button>
+      </div>
+    </div>

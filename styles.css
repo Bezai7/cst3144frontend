@@ -1,0 +1,68 @@
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  background-color: #7c3aed; /* bolder lavender */
+  color: #2c2c2c;
+}
+
+/* Header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 25px;
+  background-color: #6d28d9;
+  color: white;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+header .logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+header .logo img {
+  border-radius: 50%;
+}
+
+header .site-name {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+header .header-controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+header input[type="text"] {
+  padding: 5px 10px;
+  border-radius: 8px;
+  border: none;
+  width: 200px;
+}
+
+.cart-toggle {
+  background-color: white;
+  color: #6b21a8;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: transform 0.2s;
+}
+
+.cart-toggle:hover {
+  transform: scale(1.05);
+}
+
+/* Sort Section */
+.sort-section {
+  margin: 20px;
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
