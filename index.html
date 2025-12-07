@@ -5,11 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lavender Academy</title>
   <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 </head>
 <body>
   <div id="app">
-   
+    <!-- Header -->
     <header>
       <div class="logo">
         <img src="logo.jpg" alt="Logo" />
@@ -21,7 +22,7 @@
       </div>
     </header>
 
-   
+     <!-- Sort Section -->
     <div class="sort-section">
       <label for="sortBy">Sort by:</label>
       <select v-model="sortBy" id="sortBy">
@@ -38,9 +39,12 @@
       </select>
     </div>
 
-   
+    <!-- Courses -->
     <div class="lessons">
       <div class="lesson-card" v-for="lesson in filteredLessons" :key="lesson.id">
+        <figure class="lesson-icon">
+          <i :class="getIconClass(lesson)"></i>
+        </figure>
         <h2>{{ lesson.subject }}</h2>
         <p><strong>Location:</strong> {{ lesson.location }}</p>
         <p><strong>Price:</strong> ${{ lesson.price }}</p>
@@ -49,7 +53,7 @@
       </div>
     </div>
 
-  
+    <!-- Cart Modal -->
     <div class="cart-modal" :class="{ open: showCart }">
       <div class="cart-header">
         <h2>Your Cart</h2>
@@ -70,12 +74,12 @@
           <button class="remove-btn" @click="removeFromCart(item.book.id)">Remove</button>
         </div>
 
-        
+        <!-- Checkout Form (fixed at bottom) -->
         <div v-if="cart.length" class="checkout-form">
           <h3>Checkout</h3>
           <form @submit.prevent="checkoutForm">
-            <input type="text" v-model="customer.name" placeholder="Full Name (letters only)" required />
-            <input type="tel" v-model="customer.phone" placeholder="Phone Number (numbers only)" required />
+            <input type="text" v-model="customer.name" @input="validateCheckout" placeholder="Full Name (letters only)" required />
+            <input type="tel" v-model="customer.phone" @input="validateCheckout" placeholder="Phone Number (numbers only)" required />
             <input type="text" :value="'$' + cartTotal.toFixed(2)" readonly />
             <button type="submit" :disabled="!canCheckout" class="checkout-btn">Submit & Checkout</button>
           </form>
@@ -83,9 +87,10 @@
       </div>
     </div>
 
+    <!-- Overlay -->
     <div class="overlay" v-if="showCart" @click="showCart = false"></div>
 
-    
+    <!-- Footer -->
     <footer>
       &copy; 2025 Lavender Academy | Elegant after school courses
     </footer>
